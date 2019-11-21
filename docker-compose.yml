@@ -3,6 +3,10 @@ version: "3.7"
 volumes:
     prometheus_data: {}
     grafana_data: {}
+
+networks:
+  back-tier:
+
 services:
   prometheus:
     image: prom/prometheus:v2.1.0
@@ -18,6 +22,9 @@ services:
       - 9090:9090
     extra_hosts:
       - "dockerhost:192.168.100.135"
+    networks:
+      - back-tier
+
   grafana:
     image: grafana/grafana
     user: "104"
@@ -31,4 +38,6 @@ services:
     env_file:
       - ./grafana/config.monitoring
     restart: always
+    networks:
+      - back-tier
   
